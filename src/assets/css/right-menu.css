@@ -1,0 +1,33 @@
+/* src/assets/css/right-menu.css */
+
+.sidebar-right {
+  position: fixed;
+  top: 80px; /* احسب ارتفاع الهيدر */
+  right: 0;
+  width: 208px; /* 52 * 4 = 208px */
+  height: calc(100vh - 80px);
+  background-color: #47B981;
+  border-left: 1px solid #d1d5db;
+  padding: 1rem;
+  overflow-y: auto;
+  transition: width 0.3s ease;
+  z-index: 1000;
+  direction: rtl;
+}
+
+.sidebar-right.collapsed {
+  width: 3.25rem; /* 52px */
+}
+
+.sidebar-right::-webkit-scrollbar {
+  width: 6px;
+}
+
+.sidebar-right::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.sidebar-right::-webkit-scrollbar-track {
+  background: transparent;
+}

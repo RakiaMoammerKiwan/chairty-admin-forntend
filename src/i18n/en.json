@@ -1,0 +1,12 @@
+{
+  "appName": "Bilingual Starter",
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "switch": "العربية"
+  },
+  "home": {
+    "title": "Welcome to Bilingual Starter",
+    "description": "A starter template for bilingual React apps with Vite, i18n, and RTL/LTR support."
+  }
+}

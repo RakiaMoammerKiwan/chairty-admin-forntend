@@ -1,0 +1,13 @@
+{
+  "appName": "Hand By Hand",
+  "navbar": {
+    "home": "الرئيسية",
+    "helloAdmin": "مرحباً Admin",
+    "about": "تفاصيل",
+    "logout": "تسجيل الخروج"
+  },
+  "home": {
+    "title": "مرحباً بكم في جمعية Hand By Hand",
+    "description": "نواة لتطبيقات React ثنائية اللغة مع Vite ودعم i18n والاتجاه من اليمين لليسار والعكس."
+  }
+}

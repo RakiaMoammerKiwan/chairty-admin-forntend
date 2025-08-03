@@ -1,0 +1,23 @@
+.copyright-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px 0;
+}
+
+.copyright-text {
+  color: #555555;
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  align-item: center
+  margin: 0;
+  padding: 0 20px;
+}
+
+.copyright-year {
+  direction: rtl;
+  unicode-bidi: embed;
+  display: inline-block;
+}
