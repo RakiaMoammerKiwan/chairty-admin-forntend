@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { fetchBeneficiaryRequests } from '../services/beneficiariesService';
 import { BeneficiaryRequest } from '../types/BeneficiaryRequest';
-import { FiUser, FiPhone, FiMapPin, FiClock, FiInfo } from 'react-icons/fi';
+import { FiUser, FiPhone, FiMapPin, FiClock, FiInfo,FiBriefcase, FiCheck } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
-const PROJECT_TYPES = ['صحي', 'ديني', 'تعليمي', 'سكني', 'غذائي', 'ميداني', 'عن بعد'];
+const PROJECT_TYPES = ['صحي', 'تعليمي', 'سكني', 'غذائي'];
 
 const BeneficiaryRequestsPage: React.FC = () => {
     const [requests, setRequests] = useState<BeneficiaryRequest[]>([]);
@@ -44,7 +44,7 @@ const BeneficiaryRequestsPage: React.FC = () => {
                 {/* فلتر نوع المشروع */}
                 <div className="flex flex-col items-start lg:items-center">
                     <label className="text-lg font-medium text-gray-700 mb-2 text-start lg:text-center">
-                        نوع المشروع
+                        نوع المساعدة
                     </label>
                     <select
                         value={typeFilter}
@@ -122,11 +122,15 @@ const BeneficiaryRequestsPage: React.FC = () => {
                                     </div>
                                     <div className="flex items-center">
                                         <FiMapPin className="ml-2 text-[#47B981]" size={16} />
-                                        <span>الموقع: <span className="font-medium">{request.place_of_residence}</span></span>
+                                        <span>الموقع: <span className="font-medium">{request.governorate}</span></span>
                                     </div>
                                     <div className="flex items-center">
                                         <FiClock className="ml-2 text-[#47B981]" size={16} />
-                                        <span>النوع: <span className="font-medium">{request.type.name}</span></span>
+                                        <span>الحالة الاجتماعية: <span className="font-medium">{request.marital_status}</span></span>
+                                    </div>
+                                    <div className="flex items-center">
+                                        <FiBriefcase className="ml-2 text-[#47B981]" size={16} />
+                                        <span>الوصف: <span className="font-medium">{request.description}</span></span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-100">

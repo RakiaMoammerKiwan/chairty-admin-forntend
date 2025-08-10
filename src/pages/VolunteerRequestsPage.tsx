@@ -4,19 +4,7 @@ import { fetchVolunteerRequestsByStatus, approveVolunteerRequest, rejectVoluntee
 import { FiUser, FiPhone, FiMapPin, FiClock, FiCheck, FiX, FiInfo } from 'react-icons/fi';
 
 // تعريف نوع المتطوع بناءً على هيكل API الفعلي
-interface VolunteerRequest {
-  id: number;
-  full_name: string;
-  phone_number: string | null;
-  "age": string;
-  "place_of_residence": string;
-  "gender": string;
-  "your_last_educational_qualification": string;
-  "your_studying_domain": string;
-  "volunteering_hours": string;
-  "purpose_of_volunteering": string;
-  volunteer_status: 'مقبول' | 'مرفوض' | 'معلق';
-}
+import { VolunteerRequest } from '../types/VolunteerRequest';
 
 const VolunteerRequestsPage: React.FC = () => {
   const [requests, setRequests] = useState<VolunteerRequest[]>([]);
@@ -45,24 +33,24 @@ const VolunteerRequestsPage: React.FC = () => {
 
 
   const handleStatusChange = async (id: number, newStatus: 'مقبول' | 'مرفوض') => {
-  try {
-    const action = newStatus === 'مقبول' ? approveVolunteerRequest : rejectVolunteerRequest;
+    try {
+      const action = newStatus === 'مقبول' ? approveVolunteerRequest : rejectVolunteerRequest;
 
-    await action(id); // نُرسل فقط ID الطلب
+      await action(id); // نُرسل فقط ID الطلب
 
-    // التحديث الأمثل (Optimistic UI)
-    setRequests(prev => prev.map(req => 
-      req.id === id ? { ...req, volunteer_status: newStatus } : req
-    ));
+      // التحديث الأمثل (Optimistic UI)
+      setRequests(prev => prev.map(req =>
+        req.id === id ? { ...req, volunteer_status: newStatus } : req
+      ));
 
-    if (selectedRequest?.id === id) {
-      setSelectedRequest({ ...selectedRequest, volunteer_status: newStatus });
+      if (selectedRequest?.id === id) {
+        setSelectedRequest({ ...selectedRequest, volunteer_status: newStatus });
+      }
+    } catch (err: any) {
+      const message = err.response?.data?.message || `فشل ${newStatus === 'مقبول' ? 'قبول' : 'رفض'} الطلب`;
+      setError(message);
     }
-  } catch (err: any) {
-    const message = err.response?.data?.message || `فشل ${newStatus === 'مقبول' ? 'قبول' : 'رفض'} الطلب`;
-    setError(message);
-  }
-};
+  };
 
   // ✅ حظر المتطوع
   const handleBanVolunteer = async (id: number) => {
@@ -91,11 +79,10 @@ const VolunteerRequestsPage: React.FC = () => {
         {(['معلق', 'مقبول', 'مرفوض'] as const).map((status) => (
           <button
             key={status}
-            className={`px-3 py-1 md:px-4 md:py-2 rounded-full border text-sm md:text-base ${
-              statusFilter === status
-                ? 'bg-[#47B981] text-white border-[#47B981]'
-                : 'bg-white text-[#47B981] border-[#47B981]'
-            } transition-colors duration-200`}
+            className={`px-3 py-1 md:px-4 md:py-2 rounded-full border text-sm md:text-base ${statusFilter === status
+              ? 'bg-[#47B981] text-white border-[#47B981]'
+              : 'bg-white text-[#47B981] border-[#47B981]'
+              } transition-colors duration-200`}
             onClick={() => setStatusFilter(status)}
           >
             {status}
@@ -125,11 +112,10 @@ const VolunteerRequestsPage: React.FC = () => {
                   <h3 className="text-lg font-semibold text-gray-800">
                     {request.full_name}
                   </h3>
-                  <span className={`text-xs px-2 py-1 rounded-full ${
-                    request.volunteer_status === 'مقبول' ? 'bg-green-100 text-green-800' :
+                  <span className={`text-xs px-2 py-1 rounded-full ${request.volunteer_status === 'مقبول' ? 'bg-green-100 text-green-800' :
                     request.volunteer_status === 'مرفوض' ? 'bg-red-100 text-red-800' :
-                    'bg-yellow-100 text-yellow-800'
-                  }`}>
+                      'bg-yellow-100 text-yellow-800'
+                    }`}>
                     {request.volunteer_status}
                   </span>
                 </div>
@@ -152,8 +138,8 @@ const VolunteerRequestsPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="flex justify-between items-center mt-4 pt-3 border-t border-gray-100">
-                  <button 
-                    onClick={() => { setSelectedRequest(request); setDialogOpen(true); }} 
+                  <button
+                    onClick={() => { setSelectedRequest(request); setDialogOpen(true); }}
                     className="text-sm text-[#47B981] flex items-center gap-1 hover:text-[#3da371] transition-colors"
                   >
                     <FiInfo size={16} /> تفاصيل
@@ -201,7 +187,7 @@ const VolunteerRequestsPage: React.FC = () => {
           <div className="bg-white rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
             <div className="flex justify-between items-center p-6 border-b sticky top-0 bg-white z-10">
               <h2 className="text-2xl font-bold text-[#47B981]">تفاصيل طلب التطوع</h2>
-              <button 
+              <button
                 onClick={() => setDialogOpen(false)}
                 className="text-gray-500 hover:text-red-500 p-1 rounded-full hover:bg-gray-100 transition-colors"
               >
@@ -237,21 +223,26 @@ const VolunteerRequestsPage: React.FC = () => {
                       </div>
                     </div>
                   </div>
+
                   <div className="bg-gray-50 p-4 rounded-lg">
-                    <h3 className="text-lg font-semibold text-gray-800 mb-2">حالة الطلب</h3>
-                    <div className="flex items-center">
-                      <div className={`w-2 h-2 rounded-full mr-2 ${
-                        selectedRequest.volunteer_status === 'مقبول' ? 'bg-green-500' :
-                        selectedRequest.volunteer_status === 'مرفوض' ? 'bg-red-500' :
-                        'bg-yellow-500'
-                      }`}></div>
-                      <span className={`font-medium ${
-                        selectedRequest.volunteer_status === 'مقبول' ? 'text-green-600' :
-                        selectedRequest.volunteer_status === 'مرفوض' ? 'text-red-600' :
-                        'text-yellow-600'
-                      }`}>
-                        {selectedRequest.volunteer_status}
-                      </span>
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">تفاصيل التطوع</h3>
+                    <div className="space-y-3">
+
+                      <div className="flex items-start">
+                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <div>
+                          <p className="text-xs text-gray-500">عدد ساعات التطوع </p>
+                          <p className="font-medium">{selectedRequest.volunteering_hours}</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start">
+                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <div>
+                          <p className="text-xs text-gray-500"> الغرض من التطوع</p>
+                          <p className="font-medium">{selectedRequest.purpose_of_volunteering}</p>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -276,18 +267,43 @@ const VolunteerRequestsPage: React.FC = () => {
                       <div className="flex items-start">
                         <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
                         <div>
-                          <p className="text-xs text-gray-500">المجال الدراسي</p>
+                          <p className="text-xs text-gray-500">التخصص </p>
                           <p className="font-medium">{selectedRequest["your_studying_domain"]}</p>
                         </div>
                       </div>
+
+                      <div className="flex items-start">
+                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <div>
+                          <p className="text-xs text-gray-500">المستوى الجامعي</p>
+                          <p className="font-medium">{selectedRequest.your_last_educational_qualification}</p>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
+                  <div className="bg-gray-50 p-4 rounded-lg">
+                    <h3 className="text-lg font-semibold text-gray-800 mb-2">حالة الطلب</h3>
+                    <div className="flex items-center">
+                      <div className={`w-2 h-2 rounded-full mr-2 ${selectedRequest.volunteer_status === 'مقبول' ? 'bg-green-500' :
+                        selectedRequest.volunteer_status === 'مرفوض' ? 'bg-red-500' :
+                          'bg-yellow-500'
+                        }`}></div>
+                      <span className={`font-medium ${selectedRequest.volunteer_status === 'مقبول' ? 'text-green-600' :
+                        selectedRequest.volunteer_status === 'مرفوض' ? 'text-red-600' :
+                          'text-yellow-600'
+                        }`}>
+                        {selectedRequest.volunteer_status}
+                      </span>
+                    </div>
+                  </div>
+
                 </div>
               </div>
 
               {/* أزرار الإجراءات في نافذة التفاصيل */}
               <div className="flex justify-center gap-4 pt-6 border-t">
-                <button 
+                <button
                   onClick={() => setDialogOpen(false)}
                   className="px-6 py-2 bg-[#47B981] text-white rounded-full hover:bg-[#3da371] transition flex items-center"
                 >

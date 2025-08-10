@@ -200,8 +200,8 @@ const ProjectsPage: React.FC = () => {
               <button
                 key={status}
                 className={`px-2 py-1 md:px-4 md:py-2 rounded-full border text-lg md:text-lg whitespace-nowrap ${statusFilter === status
-                    ? 'bg-[#47B981] text-white border-[#47B981]'
-                    : 'bg-white text-[#47B981] border-[#47B981]'
+                  ? 'bg-[#47B981] text-white border-[#47B981]'
+                  : 'bg-white text-[#47B981] border-[#47B981]'
                   } transition-all duration-200 hover:shadow-md`}
                 onClick={() => setStatusFilter(status)}
               >
@@ -221,7 +221,9 @@ const ProjectsPage: React.FC = () => {
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
             >
+              <option value="">الكل</option>
               {PROJECT_TYPES.map((type) => (
+
                 <option key={type} value={type}>
                   {type}
                 </option>
@@ -343,14 +345,14 @@ const ProjectsPage: React.FC = () => {
 
                       <div className="flex flex-wrap gap-2 mb-3">
                         <span className={`text-xs px-2 py-1 rounded-full ${project.status === 'جاري' ? 'bg-green-100 text-green-800' :
-                            project.status === 'معلق' ? 'bg-yellow-100 text-yellow-800' :
-                              project.status === 'منتهي' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
+                          project.status === 'معلق' ? 'bg-yellow-100 text-yellow-800' :
+                            project.status === 'منتهي' ? 'bg-blue-100 text-blue-800' : 'bg-red-100 text-red-800'
                           }`}>
                           {project.status}
                         </span>
                         <span className={`text-xs px-2 py-1 rounded-full ${project.priority === 'حرج' ? 'bg-red-100 text-red-800' :
-                            project.priority === 'مرتفع' ? 'bg-orange-100 text-orange-800' :
-                              project.priority === 'متوسط' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
+                          project.priority === 'مرتفع' ? 'bg-orange-100 text-orange-800' :
+                            project.priority === 'متوسط' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'
                           }`}>
                           {project.priority}
                         </span>
@@ -392,13 +394,15 @@ const ProjectsPage: React.FC = () => {
                             </button>
                           )}
 
-                          <button
-                            onClick={() => handleDelete(project.id)}
-                            className="text-red-500 hover:text-red-700 transition-colors"
-                            title="حذف المشروع"
-                          >
-                            <FiTrash2 size={18} />
-                          </button>
+                          {(project.status !== 'محذوف' && project.status !== 'منتهي') && (
+                            <button
+                              onClick={() => handleDelete(project.id)}
+                              className="text-red-500 hover:text-red-700 transition-colors"
+                              title="حذف المشروع"
+                            >
+                              <FiTrash2 size={18} />
+                            </button>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -454,7 +458,7 @@ const ProjectsPage: React.FC = () => {
                     <div className="flex items-center bg-gray-50 p-3 rounded-lg">
                       <FiClock className="text-[#47B981] ml-2" size={20} />
                       <div>
-                        <p className="text-xs text-gray-500">نوع المشروع</p>
+                        <p className="text-xs text-gray-500">مدة المشروع</p>
                         <p className="font-medium">{selectedProject.duration_type}</p>
                       </div>
                     </div>
@@ -463,8 +467,8 @@ const ProjectsPage: React.FC = () => {
                       <div>
                         <p className="text-xs text-gray-500">الحالة</p>
                         <p className={`font-medium ${selectedProject.status === 'جاري' ? 'text-green-600' :
-                            selectedProject.status === 'معلق' ? 'text-yellow-600' :
-                              selectedProject.status === 'منتهي' ? 'text-blue-600' : 'text-red-600'
+                          selectedProject.status === 'معلق' ? 'text-yellow-600' :
+                            selectedProject.status === 'منتهي' ? 'text-blue-600' : 'text-red-600'
                           }`}>
                           {selectedProject.status}
                         </p>
@@ -475,8 +479,8 @@ const ProjectsPage: React.FC = () => {
                       <div>
                         <p className="text-xs text-gray-500">الأولوية</p>
                         <p className={`font-medium ${selectedProject.priority === 'حرج' ? 'text-red-600' :
-                            selectedProject.priority === 'مرتفع' ? 'text-orange-500' :
-                              selectedProject.priority === 'متوسط' ? 'text-yellow-500' : 'text-green-600'
+                          selectedProject.priority === 'مرتفع' ? 'text-orange-500' :
+                            selectedProject.priority === 'متوسط' ? 'text-yellow-500' : 'text-green-600'
                           }`}>
                           {selectedProject.priority}
                         </p>
@@ -548,18 +552,21 @@ const ProjectsPage: React.FC = () => {
                     إكمال المشروع
                   </button>
                 )}
-                <button
-                  onClick={() => {
-                    if (selectedProject) {
-                      handleDelete(selectedProject.id);
-                      setDialogOpen(false);
-                    }
-                  }}
-                  className="px-6 py-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition flex items-center"
-                >
-                  <FiTrash2 className="ml-2" />
-                  حذف المشروع
-                </button>
+                {(selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي') && (
+
+                  <button
+                    onClick={() => {
+                      if (selectedProject) {
+                        handleDelete(selectedProject.id);
+                        setDialogOpen(false);
+                      }
+                    }}
+                    className="px-6 py-2 bg-red-100 text-red-600 rounded-full hover:bg-red-200 transition flex items-center"
+                  >
+                    <FiTrash2 className="ml-2" />
+                    حذف المشروع
+                  </button>
+                )}
               </div>
             </div>
           </div>

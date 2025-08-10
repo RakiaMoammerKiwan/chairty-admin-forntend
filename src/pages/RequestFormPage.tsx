@@ -33,8 +33,6 @@ interface BeneficiaryRequest {
   current_housing_condition: string;
   needed_housing_help: string | null;
   status: string;
-  created_at: string;
-  updated_at: string;
 }
 
 const RequestFormPage: React.FC = () => {
@@ -234,7 +232,7 @@ const RequestFormPage: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">عدد الأشخاص المعالين</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">عدد الافراد المحتاجين للمساعدة</label>
             <input
               type="number"
               value={request.number_of_needy}
@@ -243,19 +241,19 @@ const RequestFormPage: React.FC = () => {
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">الحالة السكنية</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">عنوان السكن الكامل</label>
             <input
               type="text"
-              value={request.current_housing_condition}
+              value={request.home_address}
               readOnly
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">المساعدة السكنية المطلوبة</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">المحافظة</label>
             <input
               type="text"
-              value={request.needed_housing_help || 'لا يوجد'}
+              value={request.governorate}
               readOnly
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
@@ -285,23 +283,14 @@ const RequestFormPage: React.FC = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">درجة الخطورة</label>
-            <input
-              type="text"
-              value={request.severity_level}
-              readOnly
-              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-            />
-          </div>
         </div>
       </div>
 
       {/* وصف الحالة */}
       <div className="bg-gray-50 p-4 rounded-lg mb-4">
-        <h2 className="text-xl font-semibold mb-2">وصف الحالة وسبب طلب المساعدة</h2>
+        <h2 className="text-xl font-semibold mb-2">وصف المستلزمات</h2>
         <textarea
-          value={request.description}
+          value={request.supplies}
           readOnly
           rows={4}
           className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
@@ -325,31 +314,6 @@ const RequestFormPage: React.FC = () => {
           </div>
         </div>
       )}
-
-      {/* السكن */}
-      <div className="bg-gray-50 p-4 rounded-lg mb-4">
-        <h2 className="text-xl font-semibold mb-2">السكن</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">عنوان السكن الكامل</label>
-            <input
-              type="text"
-              value={request.home_address}
-              readOnly
-              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">المحافظة</label>
-            <input
-              type="text"
-              value={request.governorate}
-              readOnly
-              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-            />
-          </div>
-        </div>
-      </div>
 
       {/* زر الإقرار */}
       <div className="flex justify-between gap-4 mt-8">

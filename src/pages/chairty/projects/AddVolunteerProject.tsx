@@ -4,7 +4,7 @@ import { useDropzone } from 'react-dropzone';
 import { FiUpload, FiTrash2 } from 'react-icons/fi';
 import { addVolunteerProject } from '../../../services/VolunteerProjectService';
 
-const PROJECT_TYPES = ['عن بعد', 'ميداني', 'صحي', 'ديني', 'تعليمي', 'سكني', 'غذائي'];
+const PROJECT_TYPES = ['عن بعد', 'ميداني', 'صحي', 'تعليمي'];
 
 const AddVolunteerProject = () => {
   const [formData, setFormData] = useState({

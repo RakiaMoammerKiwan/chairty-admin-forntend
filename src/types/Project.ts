@@ -1,9 +1,10 @@
 // src/types/Project.ts
-
+import { Type } from "./Type";
 export interface Project {
   id: number;
   user_id: number | null;
   type_id: number;
+  type: Type;
   name: string;
   description: string;
   photo: string;
