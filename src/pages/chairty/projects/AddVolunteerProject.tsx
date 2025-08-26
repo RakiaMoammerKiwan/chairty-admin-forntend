@@ -14,7 +14,7 @@ const AddVolunteerProject = () => {
     total_amount: '',
     volunteer_hours: '',
     required_tasks: '',
-    location: '', // ✅ أضفنا حقل الموقع
+    location: '', 
   });
 
   const [file, setFile] = useState<File | null>(null);

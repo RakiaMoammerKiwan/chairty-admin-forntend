@@ -1,7 +1,7 @@
 // src/pages/VolunteerRequestsPage.tsx
 import React, { useEffect, useState } from 'react';
 import { fetchVolunteerRequestsByStatus, approveVolunteerRequest, rejectVolunteerRequest } from '../services/volunteersService';
-import { FiUser, FiPhone, FiMapPin, FiClock, FiCheck, FiX, FiInfo } from 'react-icons/fi';
+import { FiUser, FiPhone, FiMapPin, FiClock, FiCheck, FiX, FiInfo, FiHexagon, FiSmartphone, FiCode, FiSunset, FiActivity } from 'react-icons/fi';
 
 // تعريف نوع المتطوع بناءً على هيكل API الفعلي
 import { VolunteerRequest } from '../types/VolunteerRequest';
@@ -229,7 +229,7 @@ const VolunteerRequestsPage: React.FC = () => {
                     <div className="space-y-3">
 
                       <div className="flex items-start">
-                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <FiHexagon className="text-[#47B981] ml-2 mt-1" size={18} />
                         <div>
                           <p className="text-xs text-gray-500">عدد ساعات التطوع </p>
                           <p className="font-medium">{selectedRequest.volunteering_hours}</p>
@@ -237,7 +237,7 @@ const VolunteerRequestsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-start">
-                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <FiInfo className="text-[#47B981] ml-2 mt-1" size={18} />
                         <div>
                           <p className="text-xs text-gray-500"> الغرض من التطوع</p>
                           <p className="font-medium">{selectedRequest.purpose_of_volunteering}</p>
@@ -265,7 +265,7 @@ const VolunteerRequestsPage: React.FC = () => {
                         </div>
                       </div>
                       <div className="flex items-start">
-                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <FiCode className="text-[#47B981] ml-2 mt-1" size={18} />
                         <div>
                           <p className="text-xs text-gray-500">التخصص </p>
                           <p className="font-medium">{selectedRequest["your_studying_domain"]}</p>
@@ -273,7 +273,7 @@ const VolunteerRequestsPage: React.FC = () => {
                       </div>
 
                       <div className="flex items-start">
-                        <FiClock className="text-[#47B981] ml-2 mt-1" size={18} />
+                        <FiActivity className="text-[#47B981] ml-2 mt-1" size={18} />
                         <div>
                           <p className="text-xs text-gray-500">المستوى الجامعي</p>
                           <p className="font-medium">{selectedRequest.your_last_educational_qualification}</p>

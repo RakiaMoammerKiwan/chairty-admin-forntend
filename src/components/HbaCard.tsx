@@ -5,6 +5,7 @@ interface StatCardProps {
   title: string;
   value: string | number;
   subtitle?: string;
+  color?: string;
 }
 
 const StatCard: React.FC<StatCardProps> = ({ icon, title, value, subtitle }) => {

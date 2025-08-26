@@ -5,58 +5,50 @@ import { Project } from '../types/Project';
 
 const AUTH_TOKEN_KEY = 'auth_token';
 
-/**
- * Fetch projects of a specific type from the API.
- * @param type Project type (e.g., 'صحي', 'تعليمي')
- * @returns Array of Project objects
- * @throws Error if the request fails
- */
-export const fetchProjectsByType = async (type: string): Promise<Project[]> => {
+export interface ProjectFilter {
+  status: string;
+  priority: string;
+  type: string;
+  duration_type: string;
+}
+
+
+export const fetchProjectsByFilters = async (filters: ProjectFilter): Promise<Project[]> => {
   try {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (!token) throw new Error('No authentication token found');
 
-    if (!token) {
-      throw new Error('No authentication token found');
-    }
-
-    const response = await api.get<Project[]>(`${Paths.BASE_URL}getProjectsByType/${encodeURIComponent(type)}`, {
+    const response = await api.get<Project[]>(`${Paths.BASE_URL}getProjectsByFilters`, {
       headers: {
         Authorization: `Bearer ${token}`,
+        Accept: 'application/json',
       },
+      params: filters
     });
 
     return response.data;
   } catch (error) {
+    console.error('Error fetching projects by filters:', error);
     throw error;
   }
 };
 
-
-export const fetchProjectsByStatus = async (status: string): Promise<Project[]> => {
-  try {
-    const token = localStorage.getItem(AUTH_TOKEN_KEY);
-
-    if (!token) {
-      throw new Error('No authentication token found');
-    }
-
-    const response = await api.get<Project[]>(`${Paths.BASE_URL}filterProjectByStatus/${encodeURIComponent(status)}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
-
-    return response.data;
-  } catch (error) {
-    throw error;
-  }
+export const getProjectTypes = (): string[] => {
+  return ['الكل', 'صحي', 'تعليمي', 'سكني', 'ديني', 'غذائي', 'ميداني', 'عن بعد'];
 };
 
-/**
- * Delete a project by its ID.
- * @param id Project ID
- * @throws Error if the request fails or project cannot be deleted
- */
+export const getDurationTypes = (): string[] => {
+  return ['الكل', 'مؤقت', 'دائم', 'فردي', 'تطوعي'];
+};
+
+export const getPriorities = (): string[] => {
+  return ['الكل', 'منخفض', 'متوسط', 'مرتفع', 'حرج'];
+};
+
+export const getStatuses = (): string[] => {
+  return ['جاري', 'معلق', 'منتهي', 'محذوف'];
+};
+
 export const deleteProject = async (id: number): Promise<void> => {
   try {
     const token = localStorage.getItem(AUTH_TOKEN_KEY);
@@ -110,6 +102,38 @@ export const donateToProject = async (id: number, amount: number): Promise<void>
     });
   } catch (error) {
     console.error('Error donating to project:', error);
+    throw error;
+  }
+};
+
+
+export interface ChangeProjectStatusResponse {
+  message: string;
+}
+export const changeProjectStatus = async (
+  project_id: number, 
+  status: 'جاري' | 'معلق'
+): Promise<ChangeProjectStatusResponse> => {
+  try {
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    if (!token) {
+      throw new Error('Authentication token not found');
+    }
+
+    const response = await api.post<ChangeProjectStatusResponse>(
+      `${Paths.BASE_URL}admin/changeProjectStatus`, 
+      { project_id, status }, 
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/json',
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error('Error changing project status:', error);
     throw error;
   }
 };

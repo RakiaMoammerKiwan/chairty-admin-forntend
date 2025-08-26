@@ -1,5 +1,16 @@
 // src/types/Project.ts
+
 import { Type } from "./Type";
+
+export interface Volunteer {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  volunteer_status: string;
+  is_working: number;
+  blocked: number;
+}
 export interface Project {
   id: number;
   user_id: number | null;
@@ -17,5 +28,5 @@ export interface Project {
   volunteer_hours: string | null;
   required_tasks: string | null;
   created_at: string;
-  updated_at: string;
+  volunteers_list?: Volunteer[];
 }

@@ -2,9 +2,10 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { fetchStatistics } from '@/services/statisticsService';
+import { executeMonthlyDonation } from '@/services/monthlyDonationService';
 import StatCard from '@/components/HbaCard';
 import FinancialTransparency from '@/components/home/FinancialTransparency';
-import CampaignProgressChart from '@/components/home/CampaignProgressChart';
+import BeneficiariesChartData from '@/components/home/BeneficiariesChartData';
 
 import {
   FaProjectDiagram,
@@ -16,6 +17,7 @@ import {
   FaHome,
   FaUtensils,
   FaPray,
+  FaCalendarAlt,
 } from 'react-icons/fa';
 
 interface Statistics {
@@ -37,6 +39,9 @@ const Home: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
+  const [donationLoading, setDonationLoading] = useState<boolean>(false);
+  const [donationResult, setDonationResult] = useState<string | null>(null);
+
   const loadStats = async () => {
     try {
       const response = await fetchStatistics();
@@ -53,7 +58,29 @@ const Home: React.FC = () => {
     loadStats();
   }, []);
 
-  // دالة لتنسيق الأرقام
+
+
+  const handleExecuteMonthlyDonation = async () => {
+    if (!window.confirm('هل أنت متأكد من تنفيذ التبرع الشهري؟')) return;
+    
+    try {
+      setDonationLoading(true);
+      setDonationResult(null);
+      
+      const result = await executeMonthlyDonation();
+      setDonationResult(result.message);
+      
+      // إعادة تحميل الإحصائيات بعد النجاح
+      loadStats();
+    } catch (err: any) {
+      const message = err.response?.data?.message || 'فشل في تنفيذ التبرع الشهري';
+      setDonationResult(`خطأ: ${message}`);
+    } finally {
+      setDonationLoading(false);
+    }
+  };
+
+
   const formatNumber = (num: number): string => {
     return num.toLocaleString('ar-SA');
   };
@@ -72,7 +99,7 @@ const Home: React.FC = () => {
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen" dir="rtl">
-      <h1 className="text-2xl md:text-3xl bg-white p-2 rounded-lg shadow-md font-bold text-center text-[#47B981] mb-8">
+      <h1 className="text-2xl md:text-3xl font-bold bg-white p-4 rounded-lg shadow-md text-center text-[#47B981] mb-8">
         لوحة التحكم - الإحصائيات
       </h1>
 
@@ -132,8 +159,81 @@ const Home: React.FC = () => {
             />
           </div>
 
-          {/* رصيد المشاريع حسب النوع */}
-          <h2 className="text-xl md:text-2xl font-bold text-center text-[#47B981] mb-6">
+          <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
+            <BeneficiariesChartData />
+            {/* <FinancialTransparency /> */}
+          </div>
+        
+
+          <div className="bg-white rounded-xl shadow-md p-6 mb-8">
+            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">ملخص عام</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="font-medium text-gray-700">إجمالي الأرصدة المتاحة:</span>
+                  <span className="font-bold text-[#47B981]">
+                    {formatNumber(getTotalBalance())} $
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="font-medium text-gray-700">نسبة التبرعات إلى الأرصدة:</span>
+                  <span className="font-bold text-[#47B981]">
+                    {getTotalBalance() > 0 ?
+                      Math.round((stats.total_donations / getTotalBalance()) * 1000) / 10 : 0}%
+                  </span>
+                </div>
+              </div>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="font-medium text-gray-700">متوسط حجم المشروع:</span>
+                  <span className="font-bold text-[#47B981]">
+                    {stats.projects_count > 0 ? formatNumber(Math.round(stats.total_donations / stats.projects_count)) : 0} $
+                  </span>
+                </div>
+                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                  <span className="font-medium text-gray-700">متوسط تبرع المتبرع:</span>
+                  <span className="font-bold text-[#47B981]">
+                    {stats.donors > 0 ? formatNumber(Math.round(stats.total_donations / stats.donors)) : 0} $
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-6 pt-6 border-t border-gray-200">
+              <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">التبرع الشهري</h4>
+              
+              <div className="flex flex-col items-center">
+                <button
+                  onClick={handleExecuteMonthlyDonation}
+                  disabled={donationLoading}
+                  className="flex items-center gap-2 px-6 py-3 bg-[#47B981] text-white rounded-full hover:bg-[#3da371] transition disabled:opacity-70 disabled:cursor-not-allowed"
+                >
+                  <FaCalendarAlt size={20} />
+                  {donationLoading ? (
+                    <div className="flex items-center">
+                      <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
+                      جاري التنفيذ...
+                    </div>
+                  ) : (
+                    'تنفيذ التبرع الشهري'
+                  )}
+                </button>
+
+                {donationResult && (
+                  <div className={`mt-4 p-3 rounded-lg text-center w-full ${
+                    donationResult.startsWith('خطأ') 
+                      ? 'bg-red-100 text-red-700' 
+                      : 'bg-green-100 text-green-700'
+                  }`}>
+                    {donationResult}
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+
+ <h2 className="text-xl md:text-2xl font-bold bg-gray-100 p-4 rounded-lg shadow-md text-center text-[#47B981] mb-6">
             أرصدة مشاريع الجمعية
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
@@ -172,48 +272,6 @@ const Home: React.FC = () => {
               subtitle="متاح للتبرع للمشاريع الدينية"
               color="text-purple-600"
             />
-          </div>
-
-          {/* ملخص عام */}
-          <div className="bg-white rounded-xl shadow-md p-6 mb-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-4 text-center">ملخص عام</h3>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <span className="font-medium text-gray-700">إجمالي الأرصدة المتاحة:</span>
-                  <span className="font-bold text-[#47B981]">
-                    {formatNumber(getTotalBalance())} $
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <span className="font-medium text-gray-700">نسبة التبرعات إلى الأرصدة:</span>
-                  <span className="font-bold text-[#47B981]">
-                    {getTotalBalance() > 0 ?
-                      Math.round((stats.total_donations / getTotalBalance()) * 1000) / 10 : 0}%
-                  </span>
-                </div>
-              </div>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <span className="font-medium text-gray-700">متوسط حجم المشروع:</span>
-                  <span className="font-bold text-[#47B981]">
-                    {stats.projects_count > 0 ? formatNumber(Math.round(stats.total_donations / stats.projects_count)) : 0} $
-                  </span>
-                </div>
-                <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                  <span className="font-medium text-gray-700">متوسط تبرع المتبرع:</span>
-                  <span className="font-bold text-[#47B981]">
-                    {stats.donors > 0 ? formatNumber(Math.round(stats.total_donations / stats.donors)) : 0} $
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* الرسوم البيانية */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-            <CampaignProgressChart />
-            <FinancialTransparency />
           </div>
 
           {/* إحصائيات سريعة */}

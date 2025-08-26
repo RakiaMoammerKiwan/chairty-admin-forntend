@@ -45,7 +45,7 @@ const RightMenu: React.FC = () => {
       </button>
 
       {/* القائمة */}
-      <nav className={`flex flex-col space-y-4 mt-4 ${collapsed ? "items-center" : "items-end"}`}>
+      <nav className={`flex flex-col space-y-2 mt-3 ${collapsed ? "items-center" : "items-end"}`}>
         {[
           { to: "/home", icon: <AiOutlineHome size={20} />, label: "الرئيسية" },
           { to: "/projects", icon: <AiOutlineAppstore size={20} />, label: "مشاريع الجمعية" },

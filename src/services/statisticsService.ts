@@ -10,6 +10,11 @@ export interface StatisticsResponse {
   beneficiaries: number;
   donors: number;
   projects_count: number;
+  health_projects_balance: number;
+  educational_projects_balance: number;
+  nutritional_projects_balance: number;
+  housing_projects_balance: number;
+  religious_projects_balance: number;
 }
 
 /**
@@ -26,6 +31,30 @@ export const fetchStatistics = async (): Promise<StatisticsResponse> => {
     }
 
     const response = await api.get<StatisticsResponse>(`${Paths.BASE_URL}statistics`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;    
+  }
+};
+
+export interface BeneficiariesPerYearResponse {
+  year: string;
+  beneficiaries: number;
+}
+export const fetchBeneficiariesPerYear = async (): Promise<BeneficiariesPerYearResponse[]> => {
+  try {
+    const token = localStorage.getItem(AUTH_TOKEN_KEY);
+    
+    if (!token) {
+      throw new Error('No authentication token found');
+    }
+
+    const response = await api.get<BeneficiariesPerYearResponse[]>(`${Paths.BASE_URL}beneficiariesPerYear`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
