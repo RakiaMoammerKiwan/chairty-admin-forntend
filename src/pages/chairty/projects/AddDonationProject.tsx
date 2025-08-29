@@ -4,7 +4,7 @@ import { addBeneficiaryProject } from '../../../services/BeneficiaryProjectServi
 import { FiUpload, FiTrash2 } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 
-const PROJECT_TYPES = ['صحي', 'ديني', 'تعليمي', 'سكني', 'غذائي'];
+const PROJECT_TYPES = ['صحي', 'تعليمي', 'سكني', 'غذائي'];
 const PRIORITIES = ['منخفض', 'متوسط', 'مرتفع', 'حرج'];
 
 const AddDonationProjectForm = () => {
@@ -12,7 +12,7 @@ const AddDonationProjectForm = () => {
     type_id: '',
     name: '',
     description: '',
-    phone_number: '',
+    email: '',
     total_amount: '',
     current_amount: '0',
     priority: '',
@@ -209,15 +209,16 @@ const AddDonationProjectForm = () => {
 
           {/* رقم الهاتف */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">رقم الهاتف</label>
+            <label className="block text-sm font-medium text-gray-700 mb-2">الايميل</label>
             <input
               type="text"
-              name="phone_number"
-              value={formData.phone_number}
+              name="email"
+              value={formData.email}
               onChange={handleChange}
               className="w-full px-4 py-2 border border-[#47B981] rounded-md focus:outline-none focus:ring-1 focus:ring-[#47B981]"
-              placeholder="09XXXXXXXX"
+              placeholder="أدخل الايميل"
             />
+            
           </div>
 
           {/* المبلغ الكلي */}

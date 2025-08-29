@@ -10,7 +10,7 @@ interface StatCardProps {
 
 const StatCard: React.FC<StatCardProps> = ({ icon, title, value, subtitle }) => {
   return (
-    <div className="bg-[#F8F9FA] rounded-xl p-6 shadow-md flex flex-col items-center text-center h-full">
+    <div className="bg-[#F8F9FA] rounded-sm p-4 shadow-md flex flex-col items-center text-center h-full w-full">
       {/* Icon */}
       <div className="bg-[#E5E9F2] p-3 rounded-full mb-3 text-[#6366F1]">
         {icon}

@@ -162,7 +162,7 @@ const Home: React.FC = () => {
           <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 mb-8">
             <BeneficiariesChartData />
             {/* <FinancialTransparency /> */}
-          </div>
+          {/* </div>
         
 
           <div className="bg-white rounded-xl shadow-md p-6 mb-8">
@@ -197,7 +197,7 @@ const Home: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <div className="mt-6 pt-6 border-t border-gray-200">
               <h4 className="text-lg font-semibold text-gray-800 mb-4 text-center">التبرع الشهري</h4>

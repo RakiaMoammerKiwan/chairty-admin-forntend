@@ -9,7 +9,7 @@ export const addBeneficiaryProject = async (
     type_id: string;
     name: string;
     description: string;
-    phone_number?: string;
+    email?: string;
     total_amount: string;
     current_amount: string;
     priority: string;
@@ -24,8 +24,8 @@ export const addBeneficiaryProject = async (
     formData.append('type_id', params.type_id);
     formData.append('name', params.name);
     formData.append('description', params.description);
-    if (params.phone_number) {
-      formData.append('phone_number', params.phone_number);
+    if (params.email) {
+      formData.append('email', params.email);
     }
     formData.append('total_amount', params.total_amount);
     formData.append('current_amount', params.current_amount);

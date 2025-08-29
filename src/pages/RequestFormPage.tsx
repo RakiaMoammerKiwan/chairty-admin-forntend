@@ -261,8 +261,8 @@ const RequestFormPage: React.FC = () => {
         </div>
       </div>
 
-      {/* نوع المساعدة المطلوبة */}
-      <div className="bg-gray-50 p-4 rounded-lg mb-4">
+   
+   <div className="bg-gray-50 p-4 rounded-lg mb-4">
         <h2 className="text-xl font-semibold mb-2">نوع المساعدة المطلوبة والتكلفة المتوقعة</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <div>
@@ -274,6 +274,37 @@ const RequestFormPage: React.FC = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">الوصف</label>
+            <input
+              type="text"
+              value={request.description}
+              readOnly
+              className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+            />
+          </div>
+          {(request.type === 'سكني') && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2"> الحالة المعيشية</label>
+              <input
+                type="text"
+                value={request.current_housing_condition}
+                readOnly
+                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+              />
+            </div>
+          )}
+          {(request.type === 'سكني') && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2"> المساعدة المطلوبة</label>
+              <input
+                type="text"
+                value={request.needed_housing_help}
+                readOnly
+                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+              />
+            </div>
+          )}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">الكلفة المتوقعة</label>
             <input
@@ -287,16 +318,19 @@ const RequestFormPage: React.FC = () => {
       </div>
 
       {/* وصف الحالة */}
-      <div className="bg-gray-50 p-4 rounded-lg mb-4">
-        <h2 className="text-xl font-semibold mb-2">وصف المستلزمات</h2>
-        <textarea
-          value={request.supplies}
-          readOnly
-          rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
-        />
-      </div>
+      {(request.type === 'تعليمي') || (request.type === 'غذائي') && (
 
+        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+          <h2 className="text-xl font-semibold mb-2">وصف المستلزمات</h2>
+          <textarea
+            value={request.supplies}
+            readOnly
+            rows={4}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+          />
+        </div>
+      )}
+      
       {/* تفاصيل الأبناء */}
       {request.number_of_kids > 0 && (
         <div className="bg-gray-50 p-4 rounded-lg mb-4">
