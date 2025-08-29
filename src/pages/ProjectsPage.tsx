@@ -426,7 +426,7 @@ const ProjectsPage: React.FC = () => {
                                 </button>
                               )}
 
-                            {project.status !== 'محذوف' && project.status !== 'منتهي' && (
+                            {project.status !== 'محذوف' && project.status !== 'منتهي' && project.duration_type !=='دائم' && project.duration_type !=='تطوعي' && (
                               <button
                                 onClick={() => handleProjectStatus(project)}
                                 className="flex items-center gap-1.5 px-3 py-1.5 bg-gray-400 text-white rounded-lg text-sm font-medium hover:bg-[#3da371] transition-colors shadow-sm hover:shadow"
@@ -451,7 +451,7 @@ const ProjectsPage: React.FC = () => {
                             )}
 
                             {/* زر حذف المشروع */}
-                            {project.status !== 'محذوف' && project.status !== 'منتهي' && (
+                            {project.status !== 'محذوف' && project.status !== 'منتهي' && project.duration_type !=='دائم' && (
                               <button
                                 onClick={() => handleDelete(project.id)}
                                 className="text-red-500 hover:text-red-700 p-1.5 rounded-full hover:bg-red-50 transition-colors"
@@ -653,7 +653,7 @@ const ProjectsPage: React.FC = () => {
                       <FiDollarSign className="ml-2" /> تبرع الآن
                     </button>
                   )}
-                {selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي' && selectedProject.status !== 'معلق' && (
+                {selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي' && selectedProject.status !== 'معلق' && selectedProject.duration_type !=='دائم' && selectedProject.duration_type !=='تطوعي' && (
                   <button
                     onClick={() => handleProjectStatus(selectedProject)}
                     className="px-8 py-3 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200 transition-colors flex items-center gap-2 font-medium min-w-32"
@@ -663,7 +663,7 @@ const ProjectsPage: React.FC = () => {
                   </button>
                 )}
 
-                {selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي' && selectedProject.status !== 'جاري' && (
+                {selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي' && selectedProject.status !== 'جاري' && selectedProject.duration_type !== 'دائم' && (
 
                   <button
                     onClick={() => handleProjectStatus(selectedProject)}
@@ -683,7 +683,7 @@ const ProjectsPage: React.FC = () => {
                   </button>
                 )}
 
-                {selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي' && (
+                {selectedProject.status !== 'محذوف' && selectedProject.status !== 'منتهي' && selectedProject.duration_type !=='دائم' && selectedProject.duration_type !=='تطوعي' && (
                   <button
                     onClick={() => {
                       if (selectedProject) {
@@ -830,8 +830,7 @@ const ProjectsPage: React.FC = () => {
                   ) : (
                     <>
                       <FiDollarSign size={20} />
-                      تبرع الآن
-                    </>
+                      تبرع الآن                    </>
                   )}
                 </button>
               </form>

@@ -231,7 +231,7 @@ const RequestFormPage: React.FC = () => {
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
           </div>
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">عدد الافراد المحتاجين للمساعدة</label>
             <input
               type="number"
@@ -239,7 +239,7 @@ const RequestFormPage: React.FC = () => {
               readOnly
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
-          </div>
+          </div> */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">عنوان السكن الكامل</label>
             <input
@@ -304,8 +304,9 @@ const RequestFormPage: React.FC = () => {
                 className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
               />
             </div>
+            
           )}
-          <div>
+          {/* <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">الكلفة المتوقعة</label>
             <input
               type="number"
@@ -313,7 +314,17 @@ const RequestFormPage: React.FC = () => {
               readOnly
               className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
             />
-          </div>
+            
+          </div> */}
+          <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2"> درجة الخطورة</label>
+              <input
+                type="text"
+                value={request.severity_level}
+                readOnly
+                className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+              />
+            </div>
         </div>
       </div>
 
@@ -330,9 +341,21 @@ const RequestFormPage: React.FC = () => {
           />
         </div>
       )}
+       {(request.type === 'تعليمي')  && (
+
+        <div className="bg-gray-50 p-4 rounded-lg mb-4">
+          <h2 className="text-xl font-semibold mb-2">وصف المستلزمات</h2>
+          <textarea
+            value={request.supplies}
+            readOnly
+            rows={4}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md bg-gray-100"
+          />
+        </div>
+      )}
       
       {/* تفاصيل الأبناء */}
-      {request.number_of_kids > 0 && (
+      {request.number_of_kids >0 && (
         <div className="bg-gray-50 p-4 rounded-lg mb-4">
           <h2 className="text-xl font-semibold mb-2">تفاصيل الأولاد</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
